@@ -1,10 +1,22 @@
-const API_BASE_URL = '/nonog/students';
+function getApiBaseUrl() {
+  const envUrl = import.meta.env.VITE_API_BASE_URL;
+  if (envUrl) {
+    let clean = envUrl.trim().replace(/\/+$/, '');
+    if (!clean.endsWith('/nonog/students')) {
+      clean = `${clean}/nonog/students`;
+    }
+    return clean;
+  }
+  // Default to relative path handled by Vite dev server proxy locally
+  return '/nonog/students';
+}
 
 /**
  * Fetch all students
  */
 export async function getAllStudents() {
-  const response = await fetch(API_BASE_URL);
+  const baseUrl = getApiBaseUrl();
+  const response = await fetch(baseUrl);
   if (!response.ok) {
     throw new Error(`Failed to fetch students (HTTP ${response.status})`);
   }
@@ -15,7 +27,8 @@ export async function getAllStudents() {
  * Fetch a single student by ID
  */
 export async function getStudentById(id) {
-  const response = await fetch(`${API_BASE_URL}/${id}`);
+  const baseUrl = getApiBaseUrl();
+  const response = await fetch(`${baseUrl}/${id}`);
   if (!response.ok) {
     throw new Error(`Failed to fetch student with ID ${id} (HTTP ${response.status})`);
   }
@@ -26,7 +39,8 @@ export async function getStudentById(id) {
  * Create a new student
  */
 export async function createStudent(studentData) {
-  const response = await fetch(API_BASE_URL, {
+  const baseUrl = getApiBaseUrl();
+  const response = await fetch(baseUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -50,7 +64,8 @@ export async function createStudent(studentData) {
  * Update an existing student
  */
 export async function updateStudent(id, studentData) {
-  const response = await fetch(`${API_BASE_URL}/${id}`, {
+  const baseUrl = getApiBaseUrl();
+  const response = await fetch(`${baseUrl}/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -74,7 +89,8 @@ export async function updateStudent(id, studentData) {
  * Delete a student by ID
  */
 export async function deleteStudent(id) {
-  const response = await fetch(`${API_BASE_URL}/${id}`, {
+  const baseUrl = getApiBaseUrl();
+  const response = await fetch(`${baseUrl}/${id}`, {
     method: 'DELETE',
   });
 

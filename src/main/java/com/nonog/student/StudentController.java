@@ -8,6 +8,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
 
+@CrossOrigin(origins = "*")
 @Controller
 @RequestMapping(path="/nonog/students")
 public class StudentController {
@@ -72,4 +73,3 @@ public class StudentController {
         return ResponseEntity.status(404).body("Student with id " + id + " not found.");
     }
 }
-
